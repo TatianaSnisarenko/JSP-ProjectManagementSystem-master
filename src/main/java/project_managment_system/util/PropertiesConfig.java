@@ -1,0 +1,21 @@
+package project_managment_system.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+public class PropertiesConfig {
+    private Properties properties = new Properties();
+
+    public String getProperty(String name) {
+        return properties.getProperty(name);
+    }
+
+    public void loadPropertiesFile(String filName) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(filName)) {
+            properties.load(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,52 @@
+package project_managment_system.service.converters;
+
+import project_managment_system.dao.entity.ProjectDao;
+import project_managment_system.dto.ProjectTo;
+import project_managment_system.util.RelationsUtils;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class ProjectConverter {
+    public static ProjectDao toProjectDao(ProjectTo projectTo) {
+        ProjectDao projectDao = new ProjectDao();
+        projectDao.setIdProject(projectTo.getIdProject());
+        projectDao.setName(projectTo.getName());
+        projectDao.setDescription(projectTo.getDescription());
+        projectDao.setCost(projectTo.getCost());
+        projectDao.setDate(projectTo.getDate());
+        return projectDao;
+    }
+
+    public static ProjectTo fromProjectDao(ProjectDao projectDao) {
+        ProjectTo projectTo = new ProjectTo();
+        projectTo.setIdProject(projectDao.getIdProject());
+        projectTo.setName(projectDao.getName());
+        projectTo.setDescription(projectDao.getDescription());
+        projectTo.setCost(projectDao.getCost());
+        projectTo.setDate(projectDao.getDate());
+        projectTo.setCompanies(RelationsUtils.getAllCompaniesForProject(projectDao.getIdProject()));
+        projectTo.setCustomers(RelationsUtils.getCustomerForProject(projectDao.getIdProject()));
+        projectTo.setDevelopers(RelationsUtils.getAllDevelopersForProject(projectDao.getIdProject()));
+        return projectTo;
+    }
+
+    public static ProjectDao toProjectDao(ResultSet resultSet) throws SQLException {
+        ProjectDao projectDao = new ProjectDao();
+        projectDao.setIdProject(resultSet.getInt("id_project"));
+        projectDao.setName(resultSet.getString("name"));
+        projectDao.setDescription(resultSet.getString("description"));
+        projectDao.setCost(resultSet.getDouble("cost"));
+        projectDao.setDate(resultSet.getObject("creation_date", LocalDate.class));
+        return projectDao;
+    }
+
+    public static List<ProjectTo> allFromProjectDao(List<ProjectDao> projectDaos) {
+        return projectDaos.stream()
+                .map(ProjectConverter::fromProjectDao)
+                .collect(Collectors.toList());
+    }
+}

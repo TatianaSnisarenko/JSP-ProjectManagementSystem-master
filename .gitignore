@@ -1,0 +1,10 @@
+.iml
+.idea
+target/*
+out/*
+gradlew/*
+gradlew.bat
+gradle/*
+build/*
+
+src/main/java/MainMain
