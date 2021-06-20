@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet("/projects/*")
-public class ProjectsServlet  extends HttpServlet {
+public class ProjectsServlet extends HttpServlet {
     private Repository<ProjectDao> projectRepository;
     private Repository<DeveloperDao> developerRepository;
     private Repository<CompanyDao> companyRepository;
@@ -56,7 +56,7 @@ public class ProjectsServlet  extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getPathInfo();
-        if(action == null){
+        if (action == null) {
             action = req.getServletPath();
         }
 
@@ -85,7 +85,7 @@ public class ProjectsServlet  extends HttpServlet {
                     listProject(req, resp);
                     break;
             }
-        }catch (IOException ex){
+        } catch (IOException ex) {
             throw new ServletException(ex);
         }
     }
@@ -123,19 +123,27 @@ public class ProjectsServlet  extends HttpServlet {
         String choosenDate = req.getParameter("date");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(choosenDate, formatter);
-
+        List<DeveloperDao> developers = new ArrayList<>();
         String[] developerIds = req.getParameterValues("developers");
-        List<DeveloperDao> developers = Arrays.stream(developerIds).mapToInt(Integer::parseInt)
-                .mapToObj(i -> developerRepository.findById(i))
-                .collect(Collectors.toList());
+        if (developerIds != null && developerIds.length > 0) {
+            developers = Arrays.stream(developerIds).mapToInt(Integer::parseInt)
+                    .mapToObj(i -> developerRepository.findById(i))
+                    .collect(Collectors.toList());
+        }
+        List<CompanyDao> companies = new ArrayList<>();
         String[] companyIds = req.getParameterValues("companies");
-        List<CompanyDao> companies = Arrays.stream(companyIds).mapToInt(Integer::parseInt)
-                .mapToObj(i -> companyRepository.findById(i))
-                .collect(Collectors.toList());
+        if (companyIds != null && companyIds.length > 0) {
+            companies = Arrays.stream(companyIds).mapToInt(Integer::parseInt)
+                    .mapToObj(i -> companyRepository.findById(i))
+                    .collect(Collectors.toList());
+        }
+        List<CustomerDao> customers = new ArrayList<>();
         String[] customerIds = req.getParameterValues("customers");
-        List<CustomerDao> customers = Arrays.stream(customerIds).mapToInt(Integer::parseInt)
-                .mapToObj(i -> customerRepository.findById(i))
-                .collect(Collectors.toList());
+        if (customerIds != null && customerIds.length > 0) {
+            customers = Arrays.stream(customerIds).mapToInt(Integer::parseInt)
+                    .mapToObj(i -> customerRepository.findById(i))
+                    .collect(Collectors.toList());
+        }
         project.setName(name);
         project.setDescription(description);
         project.setDate(date);
@@ -164,7 +172,7 @@ public class ProjectsServlet  extends HttpServlet {
 
     private void showNewProjectForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         setNeededAttributes(req);
-        req.getRequestDispatcher("/view/project-form.jsp"). forward(req, resp);
+        req.getRequestDispatcher("/view/project-form.jsp").forward(req, resp);
     }
 
     private void listProject(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

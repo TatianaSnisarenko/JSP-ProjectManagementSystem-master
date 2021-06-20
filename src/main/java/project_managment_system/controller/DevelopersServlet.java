@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +54,7 @@ public class DevelopersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getPathInfo();
-        if(action == null){
+        if (action == null) {
             action = req.getServletPath();
         }
 
@@ -82,7 +83,7 @@ public class DevelopersServlet extends HttpServlet {
                     listDeveloper(req, resp);
                     break;
             }
-        }catch (IOException ex){
+        } catch (IOException ex) {
             throw new ServletException(ex);
         }
     }
@@ -102,12 +103,18 @@ public class DevelopersServlet extends HttpServlet {
         Double salary = Double.parseDouble(req.getParameter("salary"));
         int idCompany = Integer.parseInt(req.getParameter("company"));
         CompanyDao company = companyRepository.findById(idCompany);
+        List<ProjectDao> projects = new ArrayList<>();
         String[] projectsIds = req.getParameterValues("projects");
-        List<ProjectDao> projects = Arrays.stream(projectsIds).mapToInt(Integer::parseInt).mapToObj(i -> projectRepository.findById(i))
-                .collect(Collectors.toList());
+        if (projectsIds != null && projectsIds.length > 0) {
+            projects = Arrays.stream(projectsIds).mapToInt(Integer::parseInt).mapToObj(i -> projectRepository.findById(i))
+                    .collect(Collectors.toList());
+        }
+        List<SkillDao> skills = new ArrayList<>();
         String[] skillsIds = req.getParameterValues("skills");
-        List<SkillDao> skills = Arrays.stream(skillsIds).mapToInt(Integer::parseInt).mapToObj(i -> skillRepository.findById(i))
-                .collect(Collectors.toList());
+        if (skillsIds != null && skillsIds.length > 0) {
+            skills = Arrays.stream(skillsIds).mapToInt(Integer::parseInt).mapToObj(i -> skillRepository.findById(i))
+                    .collect(Collectors.toList());
+        }
         developer.setName(name);
         developer.setAge(age);
         developer.setSex(sex);
@@ -153,7 +160,7 @@ public class DevelopersServlet extends HttpServlet {
 
     private void showNewDeveloperForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         setNeededAttributes(req);
-        req.getRequestDispatcher("/view/developer-form.jsp"). forward(req, resp);
+        req.getRequestDispatcher("/view/developer-form.jsp").forward(req, resp);
     }
 
     private void listDeveloper(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

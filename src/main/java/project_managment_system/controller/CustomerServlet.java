@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class CustomerServlet extends HttpServlet {
         this.customerRepository = new CustomerRepository(DatabaseConnectionManager.getDataSource());
         this.projectRepository = new ProjectRepository(DatabaseConnectionManager.getDataSource());
         this.customersProjectsRepository = new CustomersProjectsRepository(DatabaseConnectionManager.getDataSource());
-        this.customerService= new CustomerService(customerRepository, projectRepository, customersProjectsRepository);
+        this.customerService = new CustomerService(customerRepository, projectRepository, customersProjectsRepository);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -45,7 +46,7 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getPathInfo();
-        if(action == null){
+        if (action == null) {
             action = req.getServletPath();
         }
 
@@ -74,7 +75,7 @@ public class CustomerServlet extends HttpServlet {
                     listCustomer(req, resp);
                     break;
             }
-        }catch (IOException ex){
+        } catch (IOException ex) {
             throw new ServletException(ex);
         }
     }
@@ -108,9 +109,11 @@ public class CustomerServlet extends HttpServlet {
         String name = req.getParameter("name");
         String city = req.getParameter("city");
         String[] projectsIds = req.getParameterValues("projects");
-        List<ProjectDao> projects = Arrays.stream(projectsIds).mapToInt(Integer::parseInt).mapToObj(i -> projectRepository.findById(i))
-                .collect(Collectors.toList());
-
+        List<ProjectDao> projects = new ArrayList<>();
+        if (projectsIds != null && projectsIds.length > 0) {
+            projects = Arrays.stream(projectsIds).mapToInt(Integer::parseInt).mapToObj(i -> projectRepository.findById(i))
+                    .collect(Collectors.toList());
+        }
         customer.setName(name);
         customer.setCity(city);
         customer.setProjects(projects);
@@ -128,7 +131,7 @@ public class CustomerServlet extends HttpServlet {
     private void showNewCustomerForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<ProjectDao> allProjects = projectRepository.findAll();
         req.setAttribute("allProjects", allProjects);
-        req.getRequestDispatcher("/view/customer-form.jsp"). forward(req, resp);
+        req.getRequestDispatcher("/view/customer-form.jsp").forward(req, resp);
     }
 
     private void listCustomer(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

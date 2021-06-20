@@ -73,7 +73,7 @@
                         <label>Company city</label> <input type="text"
                                                            value="<c:out value='${company.city}' />"
                                                            class="form-control"
-                                                           name="city">
+                                                           name="city" required="required">
                     </fieldset>
                     <label>Company projects</label><br>
                     <c:if test="${company != null}">
@@ -94,7 +94,6 @@
 
                     <c:if test="${company == null}">
                         <c:forEach var="project" items="${allProjects}">
-
                             <input type="checkbox" name="projects"
                                    value="${project.idProject}"/>
                             ${project.name}<br>

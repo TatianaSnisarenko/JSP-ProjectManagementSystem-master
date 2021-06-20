@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Management System</title>
@@ -59,46 +59,48 @@
                     </caption>
 
                     <c:if test="${customer != null}">
-                        <input type="hidden" name="idCustomer" value="<c:out value='${customer.idCustomer}' />" />
+                        <input type="hidden" name="idCustomer" value="<c:out value='${customer.idCustomer}' />"/>
                     </c:if>
 
                     <fieldset class="form-group">
                         <label>Customer Name</label> <input type="text"
-                                                           value="<c:out value='${customer.name}' />" class="form-control"
-                                                           name="name" required="required">
+                                                            value="<c:out value='${customer.name}' />"
+                                                            class="form-control"
+                                                            name="name" required="required">
                     </fieldset>
 
                     <fieldset class="form-group">
                         <label>Customer city</label> <input type="text"
-                                                           value="<c:out value='${customer.city}' />" class="form-control"
-                                                           name="city">
+                                                            value="<c:out value='${customer.city}' />"
+                                                            class="form-control"
+                                                            name="city" required="required">
                     </fieldset>
 
-                        <label>Customer projects</label><br>
-                        <c:if test="${customer != null}">
-                            <c:set var="customerProjects" value="${customer.projects}"/>
-                            <c:forEach var="project" items="${allProjects}">
-                                <c:if test="${customerProjects.contains(project)}">
-                                    <input type="checkbox" name="projects" checked
-                                           value="${project.idProject}"/>
-                                    ${project.name}<br>
-                                </c:if>
-                                <c:if test="${!customerProjects.contains(project)}">
-                                    <input type="checkbox" name="projects"
-                                           value="${project.idProject}"/>
-                                    ${project.name}<br>
-                                </c:if>
-                            </c:forEach>
-                        </c:if>
-
-                        <c:if test="${customer == null}">
-                            <c:forEach var="project" items="${allProjects}">
-
+                    <label>Customer projects</label><br>
+                    <c:if test="${customer != null}">
+                        <c:set var="customerProjects" value="${customer.projects}"/>
+                        <c:forEach var="project" items="${allProjects}">
+                            <c:if test="${customerProjects.contains(project)}">
+                                <input type="checkbox" name="projects" checked
+                                       value="${project.idProject}"/>
+                                ${project.name}<br>
+                            </c:if>
+                            <c:if test="${!customerProjects.contains(project)}">
                                 <input type="checkbox" name="projects"
                                        value="${project.idProject}"/>
                                 ${project.name}<br>
-                            </c:forEach>
-                        </c:if>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+
+                    <c:if test="${customer == null}">
+                        <c:forEach var="project" items="${allProjects}">
+
+                            <input type="checkbox" name="projects"
+                                   value="${project.idProject}"/>
+                            ${project.name}<br>
+                        </c:forEach>
+                    </c:if>
                     <button type="submit" class="btn btn-success">Save</button>
                 </form>
         </div>

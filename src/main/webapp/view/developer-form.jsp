@@ -95,7 +95,7 @@
 
                             <c:if test="${developerSex.equals(male)}">
                                 <input type="radio" name="sex" checked
-                                       value="male"/>
+                                       value="male" required="required"/>
                                 male <br>
                                 <input type="radio" name="sex"
                                        value="female"/>
@@ -103,7 +103,7 @@
                             </c:if>
                             <c:if test="${developerSex.equals(female)}">
                                 <input type="radio" name="sex"
-                                       value="male"/>
+                                       value="male" required="required"/>
                                 male <br>
                                 <input type="radio" name="sex" checked
                                        value="female"/>
@@ -113,7 +113,7 @@
                         </c:if>
 
                         <c:if test="${developer == null}">
-                            <input type="radio" name="sex"
+                            <input type="radio" name="sex" required="required"
                                    value="male"/>
                             male <br>
                             <input type="radio" name="sex"
@@ -130,12 +130,12 @@
 
                         <c:forEach var="company" items="${allCompanies}">
                             <c:if test="${developerCompany.equals(company)}">
-                                <input type="radio" name="company" checked
+                                <input type="radio" name="company" checked required="required"
                                        value="${company.idCompany}"/>
                                 ${company.name} <br>
                             </c:if>
                             <c:if test="${!developerCompany.equals(company)}">
-                                <input type="radio" name="company"
+                                <input type="radio" name="company" required="required"
                                        value="${company.idCompany}"/>
                                 ${company.name} <br>
                             </c:if>
@@ -144,7 +144,7 @@
 
                     <c:if test="${developer == null}">
                         <c:forEach var="company" items="${allCompanies}">
-                            <input type="radio" name="company"
+                            <input type="radio" name="company" required="required"
                                    value="${company.idCompany}"/>
                             ${company.name} <br>
                         </c:forEach>
@@ -201,9 +201,7 @@
                             ${skill.language} ${skill.level}<br>
                         </c:forEach>
                     </c:if>
-
                     <br>
-
                     <button type="submit" class="btn btn-success">Save</button>
                 </form>
         </div>

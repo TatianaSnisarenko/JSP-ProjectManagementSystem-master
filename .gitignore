@@ -8,3 +8,27 @@ gradle/*
 build/*
 
 src/main/java/MainMain
+/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+/.gradle/buildOutputCleanup/cache.properties
+/.gradle/checksums/checksums.lock
+/.gradle/7.0/javaCompile/classAnalysis.bin
+/.gradle/7.0/dependencies-accessors/dependencies-accessors.lock
+/.gradle/6.8/executionHistory/executionHistory.bin
+/.gradle/7.0/executionHistory/executionHistory.bin
+/.gradle/6.8/executionHistory/executionHistory.lock
+/.gradle/7.0/executionHistory/executionHistory.lock
+/.gradle/6.8/fileHashes/fileHashes.bin
+/.gradle/7.0/fileHashes/fileHashes.bin
+/.gradle/6.8/fileHashes/fileHashes.lock
+/.gradle/7.0/fileHashes/fileHashes.lock
+/.gradle/6.8/gc.properties
+/.gradle/7.0/dependencies-accessors/gc.properties
+/.gradle/7.0/gc.properties
+/.gradle/configuration-cache/gc.properties
+/.gradle/vcs-1/gc.properties
+/gradlew
+/.gradle/7.0/javaCompile/javaCompile.lock
+/.gradle/6.8/fileChanges/last-build.bin
+/.gradle/7.0/fileChanges/last-build.bin
+/.gradle/buildOutputCleanup/outputFiles.bin
+/.gradle/7.0/javaCompile/taskHistory.bin

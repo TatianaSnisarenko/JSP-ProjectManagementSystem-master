@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class CompaniesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getPathInfo();
-        if(action == null){
+        if (action == null) {
             action = req.getServletPath();
         }
 
@@ -74,7 +75,7 @@ public class CompaniesServlet extends HttpServlet {
                     listCompany(req, resp);
                     break;
             }
-        }catch (IOException ex){
+        } catch (IOException ex) {
             throw new ServletException(ex);
         }
     }
@@ -108,8 +109,11 @@ public class CompaniesServlet extends HttpServlet {
         String name = req.getParameter("name");
         String city = req.getParameter("city");
         String[] projectsIds = req.getParameterValues("projects");
-        List<ProjectDao> projects = Arrays.stream(projectsIds).mapToInt(Integer::parseInt).mapToObj(i -> projectRepository.findById(i))
-                .collect(Collectors.toList());
+        List<ProjectDao> projects = new ArrayList<>();
+        if (projectsIds != null && projectsIds.length > 0) {
+            projects = Arrays.stream(projectsIds).mapToInt(Integer::parseInt).mapToObj(i -> projectRepository.findById(i))
+                    .collect(Collectors.toList());
+        }
         company.setName(name);
         company.setCity(city);
         company.setProjects(projects);
@@ -127,7 +131,7 @@ public class CompaniesServlet extends HttpServlet {
     private void showNewCompanyForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<ProjectDao> allProjects = projectRepository.findAll();
         req.setAttribute("allProjects", allProjects);
-        req.getRequestDispatcher("/view/company-form.jsp"). forward(req, resp);
+        req.getRequestDispatcher("/view/company-form.jsp").forward(req, resp);
     }
 
     private void listCompany(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
